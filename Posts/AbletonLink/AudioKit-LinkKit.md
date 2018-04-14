@@ -3,11 +3,13 @@ Integrating Ableton LinkKit with AudioKit apps
 
 [Ableton Link](https://www.ableton.com/en/link/) is a great technology for syncing iOS audio apps with each other as well as Ableton Live. A link session tracks the beat, bar and phrase according to tempo so that the host apps can play always in time with a shared tempo.
 
-[LinkKit](https://ableton.github.io/linkkit/) is a C++ library with functions to create a Link session, getting the beat for the current time, updating the tempo etc. from both audio thread and UI thread. The best practice is creating it once when you initialize your app with your audio engine and tracking the beat or requesting session updates in the audio render loop. You can setup your custom timer act like an audio render loop but it does not guarantee the precise accuracy.
+[LinkKit](https://ableton.github.io/linkkit/) is a C++ library with functions to creating and joining a Link session, getting the beat for the current time, updating the tempo etc. from both audio thread and UI thread. The best practice is creating it once when you initialize your app with your audio engine and tracking the beat or requesting session updates in the audio render loop. Alternatively, you can setup your custom timer act like an audio render loop but it does not guarantee the precise accuracy.
+
+I recommend reading the [Link documentation](http://ableton.github.io/linkkit/#link-api-usage) for an in-depth overview before we start.
 
 #### Getting the LinkKit
 
-You need to [request LinkKit](https://ableton.github.io/linkkit/) from Ableton with some information and they will give you access the private repo of the LinkKit where you download final release with UI guides and a well-built example app called LinkHut. You can study the example app if you have no experience with `AudioUnit`s, Audio DSP programming, mixing Objective-C with C++ (Objective-C++). Don't worry if you are a Swift developer, it works perfectly well with Swift apps. Also, you can test your implementation with the LinkHut to check if your app is in sync with other Link apps.
+You need to [request LinkKit](https://ableton.github.io/linkkit/) from Ableton with some information and they will give you access the private repo of the LinkKit where you download final release with UI guidelines and a well-built example app called LinkHut. You can study the example app if you have no experience with `AudioUnit`s, Audio DSP programming, mixing Objective-C with C++ (Objective-C++). Don't worry if you are a Swift programmer, it works perfectly well with Swift apps. Also, you can test your implementation with the LinkHut to check if your app is in sync with other Link apps.
 
 #### AudioKit Integration
 
