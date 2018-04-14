@@ -1,0 +1,470 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1EFB7E46A691FE9C532A0169 /* Pods_AKSequencer_LinkKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79653F43E5227D4D51B7119C /* Pods_AKSequencer_LinkKit.framework */; };
+		B213F74F20823B7500E6EF93 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B213F74E20823B7500E6EF93 /* AppDelegate.swift */; };
+		B213F75120823B7500E6EF93 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B213F75020823B7500E6EF93 /* ViewController.swift */; };
+		B213F75420823B7500E6EF93 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B213F75220823B7500E6EF93 /* Main.storyboard */; };
+		B213F75620823B7500E6EF93 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B213F75520823B7500E6EF93 /* Assets.xcassets */; };
+		B213F75920823B7500E6EF93 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B213F75720823B7500E6EF93 /* LaunchScreen.storyboard */; };
+		B213F77120824C4100E6EF93 /* ABLLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B213F77020824C4000E6EF93 /* ABLLinkManager.swift */; };
+		B213F77420824C4F00E6EF93 /* Sequencer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B213F77320824C4F00E6EF93 /* Sequencer.swift */; };
+		B213F77C20824C5900E6EF93 /* libABLLink.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B213F77B20824C5800E6EF93 /* libABLLink.a */; };
+		B213F77E20824C6700E6EF93 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B213F77D20824C6600E6EF93 /* libc++.tbd */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0843770125879978C41F23C7 /* Pods-AKSequencer-LinkKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKSequencer-LinkKit.release.xcconfig"; path = "Pods/Target Support Files/Pods-AKSequencer-LinkKit/Pods-AKSequencer-LinkKit.release.xcconfig"; sourceTree = "<group>"; };
+		463121ACC3544CBE6B89882B /* Pods-AKSequencer-LinkKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKSequencer-LinkKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AKSequencer-LinkKit/Pods-AKSequencer-LinkKit.debug.xcconfig"; sourceTree = "<group>"; };
+		79653F43E5227D4D51B7119C /* Pods_AKSequencer_LinkKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AKSequencer_LinkKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B213F74B20823B7500E6EF93 /* AKSequencer-LinkKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AKSequencer-LinkKit.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B213F74E20823B7500E6EF93 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B213F75020823B7500E6EF93 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		B213F75320823B7500E6EF93 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B213F75520823B7500E6EF93 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B213F75820823B7500E6EF93 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		B213F75A20823B7500E6EF93 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B213F77020824C4000E6EF93 /* ABLLinkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ABLLinkManager.swift; sourceTree = "<group>"; };
+		B213F77220824C4700E6EF93 /* Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bridge.h; sourceTree = "<group>"; };
+		B213F77320824C4F00E6EF93 /* Sequencer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sequencer.swift; sourceTree = "<group>"; };
+		B213F77720824C5800E6EF93 /* ABLLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABLLink.h; sourceTree = "<group>"; };
+		B213F77820824C5800E6EF93 /* ABLLinkUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABLLinkUtils.h; sourceTree = "<group>"; };
+		B213F77920824C5800E6EF93 /* ABLLinkSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABLLinkSettingsViewController.h; sourceTree = "<group>"; };
+		B213F77B20824C5800E6EF93 /* libABLLink.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libABLLink.a; sourceTree = "<group>"; };
+		B213F77D20824C6600E6EF93 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B213F74820823B7500E6EF93 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B213F77E20824C6700E6EF93 /* libc++.tbd in Frameworks */,
+				1EFB7E46A691FE9C532A0169 /* Pods_AKSequencer_LinkKit.framework in Frameworks */,
+				B213F77C20824C5900E6EF93 /* libABLLink.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0B98CC82C33E468A7620B02C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				463121ACC3544CBE6B89882B /* Pods-AKSequencer-LinkKit.debug.xcconfig */,
+				0843770125879978C41F23C7 /* Pods-AKSequencer-LinkKit.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		2481E193F71211C3ABA9D19F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B213F77D20824C6600E6EF93 /* libc++.tbd */,
+				79653F43E5227D4D51B7119C /* Pods_AKSequencer_LinkKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B213F74220823B7500E6EF93 = {
+			isa = PBXGroup;
+			children = (
+				B213F74D20823B7500E6EF93 /* AKSequencer-LinkKit */,
+				B213F74C20823B7500E6EF93 /* Products */,
+				0B98CC82C33E468A7620B02C /* Pods */,
+				2481E193F71211C3ABA9D19F /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		B213F74C20823B7500E6EF93 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B213F74B20823B7500E6EF93 /* AKSequencer-LinkKit.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B213F74D20823B7500E6EF93 /* AKSequencer-LinkKit */ = {
+			isa = PBXGroup;
+			children = (
+				B213F74E20823B7500E6EF93 /* AppDelegate.swift */,
+				B213F75020823B7500E6EF93 /* ViewController.swift */,
+				B213F77320824C4F00E6EF93 /* Sequencer.swift */,
+				B213F77020824C4000E6EF93 /* ABLLinkManager.swift */,
+				B213F75220823B7500E6EF93 /* Main.storyboard */,
+				B213F75520823B7500E6EF93 /* Assets.xcassets */,
+				B213F75720823B7500E6EF93 /* LaunchScreen.storyboard */,
+				B213F75A20823B7500E6EF93 /* Info.plist */,
+				B213F77220824C4700E6EF93 /* Bridge.h */,
+				B213F77520824C5800E6EF93 /* Link */,
+			);
+			path = "AKSequencer-LinkKit";
+			sourceTree = "<group>";
+		};
+		B213F77520824C5800E6EF93 /* Link */ = {
+			isa = PBXGroup;
+			children = (
+				B213F77620824C5800E6EF93 /* include */,
+				B213F77A20824C5800E6EF93 /* lib */,
+			);
+			path = Link;
+			sourceTree = SOURCE_ROOT;
+		};
+		B213F77620824C5800E6EF93 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				B213F77720824C5800E6EF93 /* ABLLink.h */,
+				B213F77820824C5800E6EF93 /* ABLLinkUtils.h */,
+				B213F77920824C5800E6EF93 /* ABLLinkSettingsViewController.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		B213F77A20824C5800E6EF93 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				B213F77B20824C5800E6EF93 /* libABLLink.a */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B213F74A20823B7500E6EF93 /* AKSequencer-LinkKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B213F75D20823B7500E6EF93 /* Build configuration list for PBXNativeTarget "AKSequencer-LinkKit" */;
+			buildPhases = (
+				053119FA587508A9F9592558 /* [CP] Check Pods Manifest.lock */,
+				B213F74720823B7500E6EF93 /* Sources */,
+				B213F74820823B7500E6EF93 /* Frameworks */,
+				B213F74920823B7500E6EF93 /* Resources */,
+				C918B15CE8D6073ECA590400 /* [CP] Embed Pods Frameworks */,
+				7D942FEB2F823E2C7FC66423 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AKSequencer-LinkKit";
+			productName = "AKSequencer-LinkKit";
+			productReference = B213F74B20823B7500E6EF93 /* AKSequencer-LinkKit.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B213F74320823B7500E6EF93 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0920;
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = cemolcay;
+				TargetAttributes = {
+					B213F74A20823B7500E6EF93 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = B213F74620823B7500E6EF93 /* Build configuration list for PBXProject "AKSequencer-LinkKit" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B213F74220823B7500E6EF93;
+			productRefGroup = B213F74C20823B7500E6EF93 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B213F74A20823B7500E6EF93 /* AKSequencer-LinkKit */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B213F74920823B7500E6EF93 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B213F75920823B7500E6EF93 /* LaunchScreen.storyboard in Resources */,
+				B213F75620823B7500E6EF93 /* Assets.xcassets in Resources */,
+				B213F75420823B7500E6EF93 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		053119FA587508A9F9592558 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AKSequencer-LinkKit-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7D942FEB2F823E2C7FC66423 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AKSequencer-LinkKit/Pods-AKSequencer-LinkKit-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C918B15CE8D6073ECA590400 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-AKSequencer-LinkKit/Pods-AKSequencer-LinkKit-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/MIDIEventKit/MIDIEventKit.framework",
+				"${BUILT_PRODUCTS_DIR}/MusicTheorySwift/MusicTheorySwift.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MIDIEventKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MusicTheorySwift.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AKSequencer-LinkKit/Pods-AKSequencer-LinkKit-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B213F74720823B7500E6EF93 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B213F75120823B7500E6EF93 /* ViewController.swift in Sources */,
+				B213F77420824C4F00E6EF93 /* Sequencer.swift in Sources */,
+				B213F74F20823B7500E6EF93 /* AppDelegate.swift in Sources */,
+				B213F77120824C4100E6EF93 /* ABLLinkManager.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		B213F75220823B7500E6EF93 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B213F75320823B7500E6EF93 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		B213F75720823B7500E6EF93 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B213F75820823B7500E6EF93 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		B213F75B20823B7500E6EF93 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		B213F75C20823B7500E6EF93 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B213F75E20823B7500E6EF93 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 463121ACC3544CBE6B89882B /* Pods-AKSequencer-LinkKit.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 77Y3N48SNF;
+				INFOPLIST_FILE = "AKSequencer-LinkKit/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Link/lib",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cemolcay.AKSequencer-LinkKit";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "AKSequencer-LinkKit/Bridge.h";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B213F75F20823B7500E6EF93 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0843770125879978C41F23C7 /* Pods-AKSequencer-LinkKit.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 77Y3N48SNF;
+				INFOPLIST_FILE = "AKSequencer-LinkKit/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Link/lib",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cemolcay.AKSequencer-LinkKit";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "AKSequencer-LinkKit/Bridge.h";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B213F74620823B7500E6EF93 /* Build configuration list for PBXProject "AKSequencer-LinkKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B213F75B20823B7500E6EF93 /* Debug */,
+				B213F75C20823B7500E6EF93 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B213F75D20823B7500E6EF93 /* Build configuration list for PBXNativeTarget "AKSequencer-LinkKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B213F75E20823B7500E6EF93 /* Debug */,
+				B213F75F20823B7500E6EF93 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B213F74320823B7500E6EF93 /* Project object */;
+}
