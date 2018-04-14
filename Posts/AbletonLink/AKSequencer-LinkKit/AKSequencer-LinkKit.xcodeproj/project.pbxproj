@@ -17,6 +17,7 @@
 		B213F77420824C4F00E6EF93 /* Sequencer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B213F77320824C4F00E6EF93 /* Sequencer.swift */; };
 		B213F77C20824C5900E6EF93 /* libABLLink.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B213F77B20824C5800E6EF93 /* libABLLink.a */; };
 		B213F77E20824C6700E6EF93 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B213F77D20824C6600E6EF93 /* libc++.tbd */; };
+		B213F780208253EE00E6EF93 /* StepSequencer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B213F77F208253EE00E6EF93 /* StepSequencer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		B213F77920824C5800E6EF93 /* ABLLinkSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABLLinkSettingsViewController.h; sourceTree = "<group>"; };
 		B213F77B20824C5800E6EF93 /* libABLLink.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libABLLink.a; sourceTree = "<group>"; };
 		B213F77D20824C6600E6EF93 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		B213F77F208253EE00E6EF93 /* StepSequencer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepSequencer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 				B213F74E20823B7500E6EF93 /* AppDelegate.swift */,
 				B213F75020823B7500E6EF93 /* ViewController.swift */,
 				B213F77320824C4F00E6EF93 /* Sequencer.swift */,
+				B213F77F208253EE00E6EF93 /* StepSequencer.swift */,
 				B213F77020824C4000E6EF93 /* ABLLinkManager.swift */,
 				B213F75220823B7500E6EF93 /* Main.storyboard */,
 				B213F75520823B7500E6EF93 /* Assets.xcassets */,
@@ -266,6 +269,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B213F75120823B7500E6EF93 /* ViewController.swift in Sources */,
+				B213F780208253EE00E6EF93 /* StepSequencer.swift in Sources */,
 				B213F77420824C4F00E6EF93 /* Sequencer.swift in Sources */,
 				B213F74F20823B7500E6EF93 /* AppDelegate.swift in Sources */,
 				B213F77120824C4100E6EF93 /* ABLLinkManager.swift in Sources */,

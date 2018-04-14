@@ -1,6 +1,5 @@
 //
 //  ABLLinkManager.swift
-//  ArpBud
 //
 //  Created by Cem Olcay on 5.03.2018.
 //  Copyright © 2018 cemolcay. All rights reserved.
@@ -111,7 +110,7 @@ public class ABLLinkManager: NSObject {
 
   // Variables
   // var lock = os_unfair_lock() //ios10
-  private var lock: OSSpinLock = OSSpinLock()
+  private var lock = os_unfair_lock()
   private var linkData: ABLLinkData?
 
   // Debug
@@ -153,7 +152,7 @@ public class ABLLinkManager: NSObject {
   }
 
   /// Detemines if Link is playing or not.
-  public private(set) var isPlaying: Bool {
+  public var isPlaying: Bool {
     get {
       guard let linkRef = linkRef,
         let sessionState = ABLLinkCaptureAppSessionState(linkRef)
@@ -161,14 +160,14 @@ public class ABLLinkManager: NSObject {
       return ABLLinkIsPlaying(sessionState)
     } set {
       guard var linkData = linkData else { return }
-      OSSpinLockLock(&lock)
+      os_unfair_lock_lock(&lock)
       if newValue { // isPlaying
         linkData.sharedEngineData.requestStart = newValue
       } else {
         linkData.sharedEngineData.requestStop = newValue
       }
       self.linkData = linkData
-      OSSpinLockUnlock(&lock)
+      os_unfair_lock_unlock(&lock)
     }
   }
 
@@ -184,10 +183,10 @@ public class ABLLinkManager: NSObject {
       }
 
       debugMessage("ABL: Set Bpm to", newValue)
-      OSSpinLockLock(&lock)
+      os_unfair_lock_lock(&lock)
       linkData.sharedEngineData.proposeBpm = newValue
       self.linkData = linkData
-      OSSpinLockUnlock(&lock)
+      os_unfair_lock_unlock(&lock)
     }
   }
 
@@ -214,10 +213,10 @@ public class ABLLinkManager: NSObject {
       return linkData.sharedEngineData.quantum
     } set {
       guard var linkData = linkData else { return }
-      OSSpinLockLock(&lock)
+      os_unfair_lock_lock(&lock)
       linkData.sharedEngineData.quantum = newValue
       self.linkData = linkData
-      OSSpinLockUnlock(&lock) //ios10
+      os_unfair_lock_unlock(&lock)
     }
   }
 
@@ -304,7 +303,7 @@ public class ABLLinkManager: NSObject {
 
     // Attempt to grab the lock guarding the shared engine data but
     // don't block if we can't get it.
-    if OSSpinLockTry(&lock) {
+    if os_unfair_lock_trylock(&lock) {
       // Copy non-signaling members to the local thread cache
       linkData.localEngineData.outputLatency = linkData.sharedEngineData.outputLatency
       linkData.localEngineData.quantum = linkData.sharedEngineData.quantum
@@ -323,7 +322,7 @@ public class ABLLinkManager: NSObject {
       linkData.sharedEngineData.proposeBpm = ABLLinkManager.INVALID_BPM
 
       self.linkData = linkData
-      OSSpinLockUnlock(&lock)
+      os_unfair_lock_unlock(&lock)
     }
 
     // Copy from the thread local copy to the output. This happens
@@ -442,10 +441,10 @@ public class ABLLinkManager: NSObject {
     }
 
     let outputLatency: UInt32 = UInt32(linkData.secondsToHostTime * AVAudioSession.sharedInstance().outputLatency)
-    OSSpinLockLock(&lock)
+    os_unfair_lock_lock(&lock)
     linkData.sharedEngineData.outputLatency = outputLatency
     self.linkData = linkData
-    OSSpinLockUnlock(&lock)
+    os_unfair_lock_unlock(&lock)
     debugMessage("ABL: Route change")
   }
 
