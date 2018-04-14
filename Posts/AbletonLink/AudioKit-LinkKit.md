@@ -3,22 +3,22 @@ Integrating Ableton LinkKit with AudioKit apps
 
 [Ableton Link](https://www.ableton.com/en/link/) is a great technology for syncing iOS audio apps with each other as well as Ableton Live. A link session tracks the beat, bar and phrase according to tempo and the host apps can play always in time with a shared tempo.
 
-[LinkKit](https://ableton.github.io/linkkit/) is a C++ library with functions to create a Link session, getting the beat for the current time, updating the tempo etc. from both audio thread and UI thread. The best practice is creating it once when you initilize your app with your audio engine and tracking the beat or requesting session updates in the audio render loop. You can setup your custom timer act like a audio render loop but it does not guaranties the precise accuracy.
+[LinkKit](https://ableton.github.io/linkkit/) is a C++ library with functions to create a Link session, getting the beat for the current time, updating the tempo etc. from both audio thread and UI thread. The best practice is creating it once when you initialize your app with your audio engine and tracking the beat or requesting session updates in the audio render loop. You can setup your custom timer act like an audio render loop but it does not guarantee the precise accuracy.
 
 #### Getting the LinkKit
 
-You need to [request LinkKit](https://ableton.github.io/linkkit/) from Ableton with some information and they will give you access the private repo of the LinkKit where you download final release with UI guides and a well built example app called LinkHut. You can study the example app if you have no experience with `AudioUnit`s, Audio DSP programming, mixing Objective-C with C++ (Objective-C++). Don't worry if you are a Swift developer, it works perfectly well with Swift apps. Also, you can test your implementation with the LinkHut to check if your app is in sync with other Link apps.
+You need to [request LinkKit](https://ableton.github.io/linkkit/) from Ableton with some information and they will give you access the private repo of the LinkKit where you download final release with UI guides and a well-built example app called LinkHut. You can study the example app if you have no experience with `AudioUnit`s, Audio DSP programming, mixing Objective-C with C++ (Objective-C++). Don't worry if you are a Swift developer, it works perfectly well with Swift apps. Also, you can test your implementation with the LinkHut to check if your app is in sync with other Link apps.
 
 #### AudioKit Integration
 
-In case of AudioKit integration, if you have an Audio Unit where you can subscribe its render loop (the audio thread), you are basically ready to go. Also, it doesn't hurt to add one if you are not currently have one. Otherwise, you can setup your custom loop with the `NSTimer`, for example, if you are using AudioKit for just the `AKSequencer`.
+In case of AudioKit integration, if you have an Audio Unit where you can subscribe its render loop (the audio thread), you are basically ready to go. Also, it doesn't hurt to add one if you don't currently have one. Otherwise, you can setup your custom loop with the `NSTimer`, for example, if you are using AudioKit for just the `AKSequencer`.
 
 Implementation
 ----
 
 There are two main data structures you will work with. An engine data, where the audio engine related data goes, like, output latency, bpm, quantum etc.
 
-```
+``` c++
 typedef struct {
   UInt64 outputLatency;
   Float64 resetToBeatTime;
@@ -29,10 +29,10 @@ typedef struct {
 } EngineData;
 ```
 
-And Link data, the data you need in audio thread. It will have the `ABLLinkRef`, the Link itself and two `EngineData` references one is audio thread only data and other is shared between main and audio thread so changes on EngineData from different threads don't block each other. Also, it has time related datas for calculating the beats accurate as possible.
+And Link data, the data you need in audio thread. It will have the `ABLLinkRef`, the Link itself and two `EngineData` references one is the audio thread only data and other is shared between main and audio thread so changes on EngineData from different threads don't block each other. Also, it has time-related data for calculating the beats accurate as possible.
 
 
-```
+``` c++
 typedef struct {
   ABLLinkRef ablLink;
   // Shared between threads. Only write when engine not running.
@@ -53,7 +53,7 @@ typedef struct {
 
 In audio render loop, we sync `sharedEnigneData` to `localEngineData` with `static void pullEngineData(LinkData* linkData, EngineData* output)` function. So, tempo or play/stop state changes applied on audio thread.
 
-```
+``` c++
 /*
  * Pull data from the main thread to the audio thread if lock can be
  * obtained. Otherwise, just use the local copy of the data.
@@ -97,9 +97,9 @@ static void pullEngineData(LinkData* linkData, EngineData* output) {
 ```
 
 
-And last part, in our DSP code, or audio render loop, we pull the Link data, capture the current session, check the tempo, play/stop changes and commit any requested changes by our client to session.
+And last part, in our DSP code, or audio render loop, we pull the Link data, capture the current session, check the tempo, play/stop changes and commit any requested changes by our client to the session.
 
-```
+``` c++
 static OSStatus audioCallback(
                               void *inRefCon,
                               AudioUnitRenderActionFlags *flags,
@@ -175,18 +175,18 @@ static OSStatus audioCallback(
 
 When we setup our audio render loop function to audio unit, we should send our `LinkData`. So, we can pull it from `void *inRefCon` parameter in our `audioCallback` function. 
 
-```
-  AURenderCallbackStruct ioRemoteInput;
-  ioRemoteInput.inputProc = audioCallback;
-  ioRemoteInput.inputProcRefCon = &_linkData;
+``` objective-c
+AURenderCallbackStruct ioRemoteInput;
+ioRemoteInput.inputProc = audioCallback;
+ioRemoteInput.inputProcRefCon = &_linkData;
 
-  result = AudioUnitSetProperty(
-                                _ioUnit,
-                                kAudioUnitProperty_SetRenderCallback,
-                                kAudioUnitScope_Input,
-                                0,
-                                &ioRemoteInput,
-                                sizeof(ioRemoteInput));
+result = AudioUnitSetProperty(
+			_ioUnit,
+			kAudioUnitProperty_SetRenderCallback,
+			kAudioUnitScope_Input,
+			0,
+			&ioRemoteInput,
+			sizeof(ioRemoteInput));
 
 ```
 
@@ -194,19 +194,20 @@ When we setup our audio render loop function to audio unit, we should send our `
 
 You can pass your custom data type as well, if you want to do something else. For example, you can setup a custom callback function like:
 
-```
+``` objective-c
 typedef void (^AudioEngineRenderCallback)(double beat);
 ```
 
 And setup a property for implementing it in another class.
 
-```
+``` objective-c
 @property (copy) AudioEngineRenderCallback renderCallbackBlock;
 ```
 
-In your audio engine's header file. Also, you should setup a custom struct for passing it to your audio callback function.
+In your audio engine's header file. 
+Also, you should setup a custom struct for passing it to your audio callback function.
 
-```
+``` c++
 typedef struct {
   LinkData *linkRef;
   AudioEngineRenderCallback callback;
@@ -215,7 +216,7 @@ typedef struct {
 
 Create a private reference for it in your implementation file.
 
-```
+``` objective-c
 @interface AudioEngine() {
   AudioUnit _ioUnit;
   LinkData _linkData;
@@ -224,41 +225,41 @@ Create a private reference for it in your implementation file.
 @end
 ```
 
-And pass it to audio callback method.
+And pass it to the audio callback method.
 
-```
-  _renderCallbackData = AudioEngineRenderCallbackData();
-  _renderCallbackData.linkRef = &_linkData;
-  _renderCallbackData.callback = self.renderCallbackBlock;
+``` objective-c
+_renderCallbackData = AudioEngineRenderCallbackData();
+_renderCallbackData.linkRef = &_linkData;
+_renderCallbackData.callback = self.renderCallbackBlock;
 
-  // Set Audio Callback
-  AURenderCallbackStruct ioRemoteInput;
-  ioRemoteInput.inputProc = audioCallback;
-  ioRemoteInput.inputProcRefCon = &_renderCallbackData;
+// Set Audio Callback
+AURenderCallbackStruct ioRemoteInput;
+ioRemoteInput.inputProc = audioCallback;
+ioRemoteInput.inputProcRefCon = &_renderCallbackData;
 
-  result = AudioUnitSetProperty(
-                                _ioUnit,
-                                kAudioUnitProperty_SetRenderCallback,
-                                kAudioUnitScope_Input,
-                                0,
-                                &ioRemoteInput,
-                                sizeof(ioRemoteInput));
+result = AudioUnitSetProperty(
+			_ioUnit,
+			kAudioUnitProperty_SetRenderCallback,
+			kAudioUnitScope_Input,
+			0,
+			&ioRemoteInput,
+			sizeof(ioRemoteInput));
 ```
 
 Then, in your audio callback function, pull it from `void *inRefCon`.
 
-```
-  AudioEngineRenderCallbackData *data = (AudioEngineRenderCallbackData *)inRefCon;
-  LinkData *linkData = data->linkRef;
+``` c++
+AudioEngineRenderCallbackData *data = (AudioEngineRenderCallbackData *)inRefCon;
+LinkData *linkData = data->linkRef;
 ```
 
 You can pass the current beat to your custom callback function now.
 
-```
-  // Send beat callback
-  if (data->callback) {
-    data->callback(ABLLinkBeatAtTime(sessionState, hostTimeAtBufferBegin, 4));
-  }
+``` c++
+// Send beat callback
+if (data->callback) {
+  data->callback(ABLLinkBeatAtTime(sessionState, hostTimeAtBufferBegin, 4));
+}
 ```
 
 You can find the full example in [this repo](https://github.com/cemolcay/AUSequencer).
@@ -269,7 +270,7 @@ Integrating with Swift projects
 
 For Swift projects, you need a bridging header file and include the LinkKit.
 
-```
+``` objective-c
 #ifndef Bridge_h
 #define Bridge_h
 
@@ -280,38 +281,38 @@ For Swift projects, you need a bridging header file and include the LinkKit.
 #endif /* Bridge_h */
 ```
 
-Also, you need to link `libc++.tbd` to your linked frameworks and libraries section in General tab in your project settings.
+Also, you need to link `libc++.tbd` to your linked frameworks and libraries section in the General tab in your project settings.
 
 There is a Swift port of `EngineData` and `LinkData` as Swift structs that you can grab from [here](https://gist.github.com/cemolcay/3c9badfa263888d686e3aa454a5adfb7). 
 
 In this example, we will setup a custom timer and use it as our audio render loop. So, it will cover the projects with no audio units. The `update` function in the Swift port code is the same code in the audio render loop above. So, our custom timer should call it.
 
-```
-  // Timer
-  private var timer: Timer = Timer()
-  private let timerSpeed: Double = 0.1
-  
-  init() {
-    timer = Timer.scheduledTimer(
-      timeInterval: timerSpeed,
-      target: ABLLinkManager.shared,
-      selector: #selector(update),
-      userInfo: nil,
-      repeats: true)
-  }
+``` swift
+// Timer
+private var timer: Timer = Timer()
+private let timerSpeed: Double = 0.1
+
+init() {
+  timer = Timer.scheduledTimer(
+  timeInterval: timerSpeed,
+  target: ABLLinkManager.shared,
+  selector: #selector(update),
+  userInfo: nil,
+  repeats: true)
+}
 ```
 
-If you subscribe its listeners, you are going the react tempo/start/stop changes. And of course you can request the change them as well, by simply setting its properties.
+If you subscribe its listeners, you are going the react tempo/start/stop changes. And of course, you can request the change them as well, by simply setting its properties.
 
-```
-  // Subscribe tempo change events
-  ABLLinkManager.shared.add(listener: .tempo({ bpm, quantum in
-    self.tempo.bpm = bpm
-  }))
+``` swift
+// Subscribe tempo change events
+ABLLinkManager.shared.add(listener: .tempo({ bpm, quantum in
+  self.tempo.bpm = bpm
+}))
 
-  // Update Link tempo
-  @IBAction func tempoDidChange(sender: UIControl) { 
-	 ABLLinkManager.shared.bpm = tempo.bpm
-  }
+// Update Link tempo
+@IBAction func tempoDidChange(sender: UIControl) { 
+ ABLLinkManager.shared.bpm = tempo.bpm
+}
 ```
 
