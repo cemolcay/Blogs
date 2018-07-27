@@ -3,4 +3,9 @@
 import UIKit
 import MusicTheorySwift
 
-let key = Key(type: .c)
+let cSharp = Key(type: .c, accidental: .sharp)
+let minor = ScaleType.minor
+let cSharpMinor = Scale(type: minor, key: cSharp)
+
+let pitches = cSharpMinor.pitches(octave: 4)
+print(pitches)
