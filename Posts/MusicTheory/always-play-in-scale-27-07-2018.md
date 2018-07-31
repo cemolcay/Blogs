@@ -72,6 +72,8 @@ For more information visit [this github issue](https://github.com/ReactiveX/RxSw
 
 We are ready to roll now! Let's begin exploring the library.
 
+### Scales
+
 * Let's create C#-minor scale and print out it's pitches for octave 4.
 * C-major scale has two main parts. 
 * A `Key`, which is C# in our case.
@@ -91,5 +93,60 @@ let pitches = cSharpMinor.pitches(octave: 4)
 print(pitches)
 // [C♯4, D♯4, E4, F♯4, G♯4, A4, B4]
 ```
+
+Try to change `Key` and `ScaleType` to produce other scales!
+
+### Chords
+
+Now, let's take look at `Chord`s.
+  
+* Let's create C#-minor chord now.  
+* Minor chord is built by three notes with 
+	* First, third and fifth notes of the scale, minor-scale in this case.
+	* First note is the root, C# in this case
+	* Second note is the minor third of the root, E
+	* Third note is the perfect fifth of the root, G#
+* `Chord` data type lets you build chords very extensively. We can basically define all the chord parts as we defined above, take a look.
+
+```
+let cSharpMinorChord = Chord(
+  type: ChordType(
+    third: .minor,
+    fifth: .perfect,
+    sixth: nil,
+    seventh: nil,
+    suspended: nil,
+    extensions: nil),
+  key: cSharp)
+
+print(cSharpMinorChord.type.intervals)
+// [Perfect 1st, Minor 3rd, Perfect 5th]
+
+print(cSharpMinorChord.keys)
+// [C♯, E, G♯]
+```
+
+For a C#m7 (C-sharp minor seventh) chord we can do
+
+```
+let cSharpMinorSeventhChord = Chord(
+  type: ChordType(
+    third: .minor,
+    fifth: .perfect,
+    sixth: nil,
+    seventh: .dominant,
+    suspended: nil,
+    extensions: nil),
+  key: cSharp)
+
+print(cSharpMinorSeventhChord.type.intervals)
+// [Perfect 1st, Minor 3rd, Perfect 5th, Minor 7th]
+
+print(cSharpMinorSeventhChord.keys)
+// [C♯, E, G♯, B]
+```
+
+Try to define other chords with other keys, scales and chord parts yourself!
+
 
 
