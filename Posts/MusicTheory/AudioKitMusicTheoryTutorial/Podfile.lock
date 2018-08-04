@@ -2,21 +2,25 @@ PODS:
   - AudioKit (4.3):
     - AudioKit/UI (= 4.3)
   - AudioKit/UI (4.3)
+  - Eureka (4.2.0)
   - MusicTheorySwift (1.0.0)
 
 DEPENDENCIES:
   - AudioKit
+  - Eureka
   - MusicTheorySwift
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - AudioKit
+    - Eureka
     - MusicTheorySwift
 
 SPEC CHECKSUMS:
   AudioKit: 95bd2427c1afa7954d71b0c6195a09b87b7448bc
+  Eureka: 0748c7bbb2560130e43c7bfa83e99c98854a1f42
   MusicTheorySwift: 2102218ba959c04204f376d02f7719fe5f4cfb98
 
-PODFILE CHECKSUM: 764d3bc377f062fd50498863e2d6ba840303cc72
+PODFILE CHECKSUM: ed2979ac02bf636e786886d67523cf36b530f744
 
 COCOAPODS: 1.5.3

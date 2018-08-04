@@ -12,13 +12,15 @@ import MusicTheorySwift
 
 class TheSynth: AKMIDIListener {
 
-  enum OSCTable {
+  enum OSCTable: Int, CustomStringConvertible {
     case saw
     case tri
+    case sin
+    case sqr
 
-    static let all: [OSCTable] = [.saw, .tri]
+    static let all: [OSCTable] = [.saw, .tri, sin, sqr]
 
-    var index: Double {
+    var morphingIndex: Double {
       guard let i = OSCTable.all.index(of: self) else { return 0 }
       return Double(OSCTable.all.count) / Double(i)
     }
@@ -27,7 +29,90 @@ class TheSynth: AKMIDIListener {
       switch self {
       case .saw: return AKTable(.sawtooth)
       case .tri: return AKTable(.triangle)
+      case .sin: return AKTable(.sine)
+      case .sqr: return AKTable(.square)
       }
+    }
+
+    var description: String {
+      switch self {
+      case .saw: return "Sawtooth"
+      case .tri: return "Triangle"
+      case .sin: return "Sine"
+      case .sqr: return "Square"
+      }
+    }
+  }
+
+  enum SynthRate: Int, CustomStringConvertible {
+    case whole
+    case wholeDotted
+    case wholeTriplet
+    case half
+    case halfDotted
+    case halfTriplet
+    case quarter
+    case quarterDotted
+    case quarterTriplet
+    case eighth
+    case eighthDotted
+    case eighthTriplet
+    case sixteenth
+    case sixtheenthDotted
+    case sixteenthTriplet
+    case thirtysecond
+    case thirtysecondDotted
+    case thirtysecondTriplet
+    case sixtyfourth
+    case sixtyfourthDotted
+    case sixtyfourthTriplet
+
+    static let all: [SynthRate] = [
+      .whole, .wholeDotted, .wholeTriplet,
+      .half, .halfDotted, .halfTriplet,
+      .quarter, .quarterDotted, .quarterTriplet,
+      .eighth, .eighthDotted, .eighthTriplet,
+      .sixteenth, .sixtheenthDotted, .sixteenthTriplet,
+      .thirtysecond, .thirtysecondDotted, .thirtysecondTriplet,
+      .sixtyfourth, .sixtyfourthDotted, .sixtyfourthTriplet
+    ]
+
+    var rate: NoteValue {
+      switch self {
+      case .whole: return NoteValue(type: .whole, modifier: .default)
+      case .wholeDotted: return NoteValue(type: .whole, modifier: .dotted)
+      case .wholeTriplet: return NoteValue(type: .whole, modifier: .triplet)
+
+      case .half: return NoteValue(type: .half, modifier: .default)
+      case .halfDotted: return NoteValue(type: .half, modifier: .dotted)
+      case .halfTriplet: return NoteValue(type: .half, modifier: .triplet)
+
+      case .quarter: return NoteValue(type: .quarter, modifier: .default)
+      case .quarterDotted: return NoteValue(type: .quarter, modifier: .dotted)
+      case .quarterTriplet: return NoteValue(type: .quarter, modifier: .triplet)
+
+      case .eighth: return NoteValue(type: .eighth, modifier: .default)
+      case .eighthDotted: return NoteValue(type: .eighth, modifier: .dotted)
+      case .eighthTriplet: return NoteValue(type: .eighth, modifier: .triplet)
+
+      case .sixteenth: return NoteValue(type: .sixteenth, modifier: .default)
+      case .sixtheenthDotted: return NoteValue(type: .sixteenth, modifier: .dotted)
+      case .sixteenthTriplet: return NoteValue(type: .sixteenth, modifier: .triplet)
+
+      case .thirtysecond: return NoteValue(type: .thirtysecond, modifier: .default)
+      case .thirtysecondDotted: return NoteValue(type: .thirtysecond, modifier: .dotted)
+      case .thirtysecondTriplet: return NoteValue(type: .thirtysecond, modifier: .triplet)
+
+      case .sixtyfourth: return NoteValue(type: .sixtyfourth, modifier: .default)
+      case .sixtyfourthDotted: return NoteValue(type: .sixtyfourth, modifier: .dotted)
+      case .sixtyfourthTriplet: return NoteValue(type: .sixtyfourth, modifier: .triplet)
+      }
+    }
+
+    var description: String {
+      let type = "\(rate.type)"
+      let modifier = rate.modifier == .default ? "" : "\(rate.modifier)"
+      return "\(type.capitalized) \(modifier.capitalized)"
     }
   }
 
@@ -36,44 +121,47 @@ class TheSynth: AKMIDIListener {
   var osc1table: OSCTable = .saw { didSet { update() }}
   var osc2table: OSCTable = .saw { didSet { update() }}
   var ladder: AKMoogLadder!
-  var ladderEG: AKAmplitudeEnvelope!
+  var ladderEG: AKAmplitudeEnvelope! { didSet { update() }}
   var ladderCutoff: Double = 0 { didSet { update() }}
   var ladderResonance: Double = 0 { didSet { update() }}
   var osc1Amp: Double = 1 { didSet { update() }}
   var osc2Amp: Double = 1 { didSet { update() }}
-  var ampEG: AKAmplitudeEnvelope!
+  var ampEG: AKAmplitudeEnvelope! { didSet { update() }}
   var mixer: AKMixer!
 
   var sequencer: AKSequencer!
-  var tempo = Tempo()
+  var tempo = Tempo() { didSet { sequencer?.setTempo(tempo.bpm) }}
   var midi = AKMIDI()
 
-  func setupMIDI() {
-    midi.addListener(self)
-    midi.createVirtualInputPort()
-  }
+  var key = Key(type: .c) { didSet { restartSequencer() }}
+  var scaleType = ScaleType.major { didSet { restartSequencer() }}
+  var rate = NoteValue(type: .quarter) { didSet { restartSequencer() }}
+  var velocity: UInt8 = 90 { didSet { restartSequencer() }}
+  var octave: Int = 4 { didSet { restartSequencer() }}
+
+  // MARK: Lifecycle
 
   func start() {
-    setupMIDI()
-
+    // OSC
     osc1 = AKMorphingOscillator(
       waveformArray: OSCTable.all.map({ $0.table }),
       frequency: 0,
-      amplitude: osc1Amp,
+      amplitude: 0,
       detuningOffset: 0,
       detuningMultiplier: 0)
 
     osc2 = AKMorphingOscillator(
       waveformArray: OSCTable.all.map({ $0.table }),
       frequency: 0,
-      amplitude: osc2Amp,
+      amplitude: 0,
       detuningOffset: 0,
       detuningMultiplier: 0)
 
+    // Mixer
     mixer = AKMixer([osc1, osc2])
     mixer.volume = 1.0
 
-
+    // Filter
     ladder = AKMoogLadder(
       mixer,
       cutoffFrequency:
@@ -86,6 +174,7 @@ class TheSynth: AKMIDIListener {
       sustainLevel: 0.2,
       releaseDuration: 0.1)
 
+    // AMP
     ampEG = AKAmplitudeEnvelope(
       ladderEG,
       attackDuration: 0,
@@ -93,18 +182,23 @@ class TheSynth: AKMIDIListener {
       sustainLevel: 0.2,
       releaseDuration: 0.1)
 
+    // AudioKit
     AudioKit.output = ampEG
     do {
       try AudioKit.start()
     } catch {
       print(error)
     }
+    
+    // MIDI
+    midi.addListener(self)
+    midi.createVirtualInputPort()
   }
 
   func update() {
     // table
-    osc1.index = osc1table.index
-    osc2.index = osc2table.index
+    osc1.index = osc1table.morphingIndex
+    osc2.index = osc2table.morphingIndex
     // ladder
     ladder.cutoffFrequency = ladderCutoff
     ladder.resonance = ladderResonance
@@ -113,14 +207,18 @@ class TheSynth: AKMIDIListener {
     osc2.amplitude = osc2Amp
   }
 
-  func startSequencer(scale: Scale = Scale(type: .major, key: Key(type: .c)), rate: NoteValue = NoteValue(type: .quarter), octave: Int = 4, velocity: UInt8 = 90) {
+  // MARK: Sequencer
+
+  func startSequencer() {
     sequencer = AKSequencer()
     sequencer.setTempo(tempo.bpm)
 
     let track = sequencer.newTrack()
+    let scale = Scale(type: scaleType, key: key)
     let pitches = scale.pitches(octave: octave)
     let duration = AKDuration(seconds: tempo.duration(of: rate))
     var currentPosition = AKDuration(beats: 0)
+
     for pitch in pitches {
       track?.add(
         noteNumber: MIDINoteNumber(pitch.rawValue),
@@ -137,6 +235,13 @@ class TheSynth: AKMIDIListener {
 
   func stopSequencer() {
     sequencer.stop()
+  }
+
+  func restartSequencer() {
+    if sequencer?.isPlaying == true {
+      stopSequencer()
+      startSequencer()
+    }
   }
 
   // MARK: AKMIDIListener

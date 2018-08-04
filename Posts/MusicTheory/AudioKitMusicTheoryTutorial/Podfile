@@ -2,6 +2,7 @@ target 'AudioKitMusicTheoryTutorial' do
   use_frameworks!
   pod 'MusicTheorySwift'
   pod 'AudioKit'
+  pod 'Eureka'
 end
 
 post_install do |installer|
