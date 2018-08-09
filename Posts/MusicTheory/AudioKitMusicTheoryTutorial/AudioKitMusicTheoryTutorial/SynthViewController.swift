@@ -12,7 +12,8 @@ import MusicTheorySwift
 
 class SynthViewController: FormViewController {
   let synth = TheSynth()
-  let oscSection = Section("OSC")
+  let osc1Section = Section("OSC1")
+  let osc2Section = Section("OSC2")
   let filterSection = Section("FILTER")
   let ampSection = Section("AMP")
   let sequencerSection = Section("SEQUENCER")
@@ -27,27 +28,46 @@ class SynthViewController: FormViewController {
 
     // OSC Section
 
-    oscSection <<< SegmentedRow<String>() {
-      $0.title = "OSC1 Wavetable"
+    osc1Section <<< SegmentedRow<String>() {
       $0.options = TheSynth.OSCTable.all.map({ $0.description })
-    }.cellUpdate({ cell, row in
-      cell.segmentedControl.selectedSegmentIndex = self.synth.osc1table.rawValue
-    }).onChange({
+    }.onChange({
       let selectedIndex = $0.cell.segmentedControl.selectedSegmentIndex
       guard let wavetable = TheSynth.OSCTable(rawValue: selectedIndex) else { return }
       self.synth.osc1table = wavetable
     })
 
-    oscSection <<< SegmentedRow<String>() {
-      $0.title = "OSC2 Wavetable"
+    osc1Section <<< SliderRow() {
+      $0.title = "Amp"
+      $0.cell.slider.minimumValue = 0
+      $0.cell.slider.maximumValue = 1
+      $0.value = Float(self.synth.osc1Amp)
+      }.cellUpdate({ cell, row in
+        cell.slider.value = Float(self.synth.osc1Amp)
+      }).onChange({
+        guard let value = $0.value else { return }
+        self.synth.osc1Amp = Double(value)
+      })
+
+    osc2Section <<< SegmentedRow<String>() {
       $0.options = TheSynth.OSCTable.all.map({ $0.description })
-    }.cellUpdate({ cell, row in
-      cell.segmentedControl.selectedSegmentIndex = self.synth.osc2table.rawValue
-    }).onChange({
+    }.onChange({
       let selectedIndex = $0.cell.segmentedControl.selectedSegmentIndex
       guard let wavetable = TheSynth.OSCTable(rawValue: selectedIndex) else { return }
       self.synth.osc2table = wavetable
     })
+
+    osc2Section <<< SliderRow() {
+      $0.title = "Amp"
+      $0.cell.slider.minimumValue = 0
+      $0.cell.slider.maximumValue = 1
+      $0.value = Float(self.synth.osc2Amp)
+      }.cellUpdate({ cell, row in
+        cell.slider.value = Float(self.synth.osc2Amp)
+      }).onChange({
+        guard let value = $0.value else { return }
+        self.synth.osc2Amp = Double(value)
+      })
+
 
     // Filter Section
 
@@ -124,30 +144,6 @@ class SynthViewController: FormViewController {
     })
 
     // AMP Section
-
-    ampSection <<< SliderRow() {
-      $0.title = "OSC1"
-      $0.cell.slider.minimumValue = 0
-      $0.cell.slider.maximumValue = 1000
-      $0.value = Float(self.synth.osc1Amp)
-    }.cellUpdate({ cell, row in
-      cell.slider.value = Float(self.synth.osc1Amp)
-    }).onChange({
-      guard let value = $0.value else { return }
-      self.synth.osc1Amp = Double(value)
-    })
-
-    ampSection <<< SliderRow() {
-      $0.title = "OSC2"
-      $0.cell.slider.minimumValue = 0
-      $0.cell.slider.maximumValue = 1000
-      $0.value = Float(self.synth.osc2Amp)
-    }.cellUpdate({ cell, row in
-      cell.slider.value = Float(self.synth.osc2Amp)
-    }).onChange({
-      guard let value = $0.value else { return }
-      self.synth.osc2Amp = Double(value)
-    })
 
     ampSection <<< SliderRow() {
       $0.title = "Attack"
@@ -266,10 +262,11 @@ class SynthViewController: FormViewController {
         self.synth.startSequencer()
       }
       
-      row.title = self.synth.sequencer?.isPlaying == true ? "Stop" : "Play"
+      cell.textLabel?.text = self.synth.sequencer?.isPlaying == true ? "Stop" : "Play"
     })
 
-    form +++ oscSection
+    form +++ osc1Section
+      +++ osc2Section
       +++ filterSection
       +++ ampSection
       +++ sequencerSection

@@ -124,14 +124,13 @@ class TheSynth: AKMIDIListener {
   var ladderEG: AKAmplitudeEnvelope! { didSet { update() }}
   var ladderCutoff: Double = 0 { didSet { update() }}
   var ladderResonance: Double = 0 { didSet { update() }}
-  var osc1Amp: Double = 1 { didSet { update() }}
-  var osc2Amp: Double = 1 { didSet { update() }}
+  var osc1Amp: Double = 1
+  var osc2Amp: Double = 1
   var ampEG: AKAmplitudeEnvelope! { didSet { update() }}
   var mixer: AKMixer!
 
   var sequencer: AKSequencer!
   var tempo = Tempo() { didSet { sequencer?.setTempo(tempo.bpm) }}
-  var midi = AKMIDI()
 
   var key = Key(type: .c) { didSet { restartSequencer() }}
   var scaleType = ScaleType.major { didSet { restartSequencer() }}
@@ -164,8 +163,8 @@ class TheSynth: AKMIDIListener {
     // Filter
     ladder = AKMoogLadder(
       mixer,
-      cutoffFrequency:
-      ladderCutoff, resonance: ladderResonance)
+      cutoffFrequency: ladderCutoff,
+      resonance: ladderResonance)
 
     ladderEG = AKAmplitudeEnvelope(
       ladder,
@@ -182,6 +181,8 @@ class TheSynth: AKMIDIListener {
       sustainLevel: 0.2,
       releaseDuration: 0.1)
 
+    let midiNode = AKMIDINode(node: ampEG)
+
     // AudioKit
     AudioKit.output = ampEG
     do {
@@ -189,10 +190,6 @@ class TheSynth: AKMIDIListener {
     } catch {
       print(error)
     }
-    
-    // MIDI
-    midi.addListener(self)
-    midi.createVirtualInputPort()
   }
 
   func update() {
@@ -202,9 +199,6 @@ class TheSynth: AKMIDIListener {
     // ladder
     ladder.cutoffFrequency = ladderCutoff
     ladder.resonance = ladderResonance
-    // amp
-    osc1.amplitude = osc1Amp
-    osc2.amplitude = osc2Amp
   }
 
   // MARK: Sequencer
@@ -228,7 +222,7 @@ class TheSynth: AKMIDIListener {
       currentPosition = AKDuration(seconds: currentPosition.seconds + duration.seconds)
     }
 
-    track?.setMIDIOutput(midi.virtualInput)
+    track?.setMIDIOutput(midiIn)
     sequencer.enableLooping(currentPosition)
     sequencer.play()
   }
@@ -246,11 +240,12 @@ class TheSynth: AKMIDIListener {
 
   // MARK: AKMIDIListener
 
-  func receivedMIDINoteOn(noteNumber: MIDINoteNumber, velocity: MIDIVelocity, channel: MIDIChannel) {
+  func receivedMIDINoteOn(_ noteNumber: MIDINoteNumber, velocity: MIDIVelocity, channel: MIDIChannel) {
     osc1.frequency = noteNumber.midiNoteToFrequency()
     osc2.frequency = noteNumber.midiNoteToFrequency()
     osc1.amplitude = osc1Amp
     osc2.amplitude = osc2Amp
+    print(osc1Amp, osc2Amp)
   }
 
   func receivedMIDINoteOff(noteNumber: MIDINoteNumber, velocity: MIDIVelocity, channel: MIDIChannel) {
