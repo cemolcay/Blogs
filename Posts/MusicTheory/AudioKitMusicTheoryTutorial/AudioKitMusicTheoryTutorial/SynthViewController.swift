@@ -30,7 +30,9 @@ class SynthViewController: FormViewController {
 
     osc1Section <<< SegmentedRow<String>() {
       $0.options = TheSynth.OSCTable.all.map({ $0.description })
-    }.onChange({
+    }.cellUpdate({ cell, row in
+      cell.segmentedControl.selectedSegmentIndex = self.synth.osc1table.rawValue
+    }).onChange({
       let selectedIndex = $0.cell.segmentedControl.selectedSegmentIndex
       guard let wavetable = TheSynth.OSCTable(rawValue: selectedIndex) else { return }
       self.synth.osc1table = wavetable
@@ -50,7 +52,9 @@ class SynthViewController: FormViewController {
 
     osc2Section <<< SegmentedRow<String>() {
       $0.options = TheSynth.OSCTable.all.map({ $0.description })
-    }.onChange({
+    }.cellUpdate({ cell, row in
+      cell.segmentedControl.selectedSegmentIndex = self.synth.osc2table.rawValue
+    }).onChange({
       let selectedIndex = $0.cell.segmentedControl.selectedSegmentIndex
       guard let wavetable = TheSynth.OSCTable(rawValue: selectedIndex) else { return }
       self.synth.osc2table = wavetable
@@ -98,7 +102,7 @@ class SynthViewController: FormViewController {
     filterSection <<< SliderRow() {
       $0.title = "Attack"
       $0.cell.slider.minimumValue = 0
-      $0.cell.slider.maximumValue = 1000
+      $0.cell.slider.maximumValue = 5
       $0.value = Float(self.synth.ladderEG.attackDuration)
     }.cellUpdate({ cell, row in
       cell.slider.value = Float(self.synth.ladderEG.attackDuration)
@@ -110,7 +114,7 @@ class SynthViewController: FormViewController {
     filterSection <<< SliderRow() {
       $0.title = "Decay"
       $0.cell.slider.minimumValue = 0
-      $0.cell.slider.maximumValue = 1000
+      $0.cell.slider.maximumValue = 5
       $0.value = Float(self.synth.ladderEG.decayDuration)
     }.cellUpdate({ cell, row in
       cell.slider.value = Float(self.synth.ladderEG.decayDuration)
@@ -122,7 +126,7 @@ class SynthViewController: FormViewController {
     filterSection <<< SliderRow() {
       $0.title = "Sustain"
       $0.cell.slider.minimumValue = 0
-      $0.cell.slider.maximumValue = 1000
+      $0.cell.slider.maximumValue = 5
       $0.value = Float(self.synth.ladderEG.sustainLevel)
     }.cellUpdate({ cell, row in
       cell.slider.value = Float(self.synth.ladderEG.sustainLevel)
@@ -134,7 +138,7 @@ class SynthViewController: FormViewController {
     filterSection <<< SliderRow() {
       $0.title = "Release"
       $0.cell.slider.minimumValue = 0
-      $0.cell.slider.maximumValue = 1000
+      $0.cell.slider.maximumValue = 5
       $0.value = Float(self.synth.ladderEG.releaseDuration)
     }.cellUpdate({ cell, row in
       cell.slider.value = Float(self.synth.ladderEG.releaseDuration)
@@ -148,7 +152,7 @@ class SynthViewController: FormViewController {
     ampSection <<< SliderRow() {
       $0.title = "Attack"
       $0.cell.slider.minimumValue = 0
-      $0.cell.slider.maximumValue = 1000
+      $0.cell.slider.maximumValue = 5
       $0.value = Float(self.synth.ampEG.attackDuration)
     }.cellUpdate({ cell, row in
       cell.slider.value = Float(self.synth.ampEG.attackDuration)
@@ -160,7 +164,7 @@ class SynthViewController: FormViewController {
     ampSection <<< SliderRow() {
       $0.title = "Decay"
       $0.cell.slider.minimumValue = 0
-      $0.cell.slider.maximumValue = 1000
+      $0.cell.slider.maximumValue = 5
       $0.value = Float(self.synth.ampEG.decayDuration)
     }.cellUpdate({ cell, row in
       cell.slider.value = Float(self.synth.ampEG.decayDuration)
@@ -172,7 +176,7 @@ class SynthViewController: FormViewController {
     ampSection <<< SliderRow() {
       $0.title = "Sustain"
       $0.cell.slider.minimumValue = 0
-      $0.cell.slider.maximumValue = 1000
+      $0.cell.slider.maximumValue = 5
       $0.value = Float(self.synth.ampEG.sustainLevel)
     }.cellUpdate({ cell, row in
       cell.slider.value = Float(self.synth.ampEG.sustainLevel)
@@ -184,7 +188,7 @@ class SynthViewController: FormViewController {
     ampSection <<< SliderRow() {
       $0.title = "Release"
       $0.cell.slider.minimumValue = 0
-      $0.cell.slider.maximumValue = 1000
+      $0.cell.slider.maximumValue = 5
       $0.value = Float(self.synth.ampEG.releaseDuration)
     }.cellUpdate({ cell, row in
       cell.slider.value = Float(self.synth.ampEG.releaseDuration)

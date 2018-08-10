@@ -116,49 +116,41 @@ class TheSynth: AKMIDIListener {
     }
   }
 
-  var osc1: AKMorphingOscillator!
-  var osc2: AKMorphingOscillator!
+  // OSC
+  var osc1 = AKMorphingOscillator(waveformArray: OSCTable.all.map({ $0.table }))
+  var osc2 = AKMorphingOscillator(waveformArray: OSCTable.all.map({ $0.table }))
   var osc1table: OSCTable = .saw { didSet { update() }}
   var osc2table: OSCTable = .saw { didSet { update() }}
+  var mixer: AKMixer!
+
+  // Filter
   var ladder: AKMoogLadder!
   var ladderEG: AKAmplitudeEnvelope! { didSet { update() }}
   var ladderCutoff: Double = 0 { didSet { update() }}
   var ladderResonance: Double = 0 { didSet { update() }}
+
+  // Amp
   var osc1Amp: Double = 1
   var osc2Amp: Double = 1
   var ampEG: AKAmplitudeEnvelope! { didSet { update() }}
-  var mixer: AKMixer!
 
+  // Sequencer
+  let midi = AKMIDI()
   var sequencer: AKSequencer!
   var tempo = Tempo() { didSet { sequencer?.setTempo(tempo.bpm) }}
-
+  var velocity: UInt8 = 90 { didSet { restartSequencer() }}
+  
+  // Sequence
   var key = Key(type: .c) { didSet { restartSequencer() }}
   var scaleType = ScaleType.major { didSet { restartSequencer() }}
   var rate = NoteValue(type: .quarter) { didSet { restartSequencer() }}
-  var velocity: UInt8 = 90 { didSet { restartSequencer() }}
   var octave: Int = 4 { didSet { restartSequencer() }}
 
   // MARK: Lifecycle
 
   func start() {
-    // OSC
-    osc1 = AKMorphingOscillator(
-      waveformArray: OSCTable.all.map({ $0.table }),
-      frequency: 0,
-      amplitude: 0,
-      detuningOffset: 0,
-      detuningMultiplier: 0)
-
-    osc2 = AKMorphingOscillator(
-      waveformArray: OSCTable.all.map({ $0.table }),
-      frequency: 0,
-      amplitude: 0,
-      detuningOffset: 0,
-      detuningMultiplier: 0)
-
     // Mixer
     mixer = AKMixer([osc1, osc2])
-    mixer.volume = 1.0
 
     // Filter
     ladder = AKMoogLadder(
@@ -181,11 +173,20 @@ class TheSynth: AKMIDIListener {
       sustainLevel: 0.2,
       releaseDuration: 0.1)
 
-    let midiNode = AKMIDINode(node: ampEG)
+    // MIDI
+    midi.createVirtualInputPort()
+    midi.addListener(self)
 
     // AudioKit
-    AudioKit.output = ampEG
     do {
+      osc1.start()
+      osc2.start()
+      mixer.start()
+      ladder.start()
+      ladderEG.start()
+      ampEG.start()
+
+      AudioKit.output = mixer
       try AudioKit.start()
     } catch {
       print(error)
@@ -222,7 +223,7 @@ class TheSynth: AKMIDIListener {
       currentPosition = AKDuration(seconds: currentPosition.seconds + duration.seconds)
     }
 
-    track?.setMIDIOutput(midiIn)
+    track?.setMIDIOutput(midi.virtualInput)
     sequencer.enableLooping(currentPosition)
     sequencer.play()
   }
