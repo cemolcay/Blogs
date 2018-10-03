@@ -18,11 +18,11 @@ class TheSynth: AKMIDIListener {
     case sin
     case sqr
 
-    static let all: [OSCTable] = [.saw, .tri, sin, sqr]
+    static let all: [OSCTable] = [.sin, .tri, .saw, .sqr]
 
     var morphingIndex: Double {
       guard let i = OSCTable.all.index(of: self) else { return 0 }
-      return Double(OSCTable.all.count) / Double(i)
+      return Double(i) / Double(OSCTable.all.count)
     }
 
     var table: AKTable {
@@ -132,14 +132,14 @@ class TheSynth: AKMIDIListener {
   // Amp
   var osc1Amp: Double = 1
   var osc2Amp: Double = 1
-  var ampEG: AKAmplitudeEnvelope! { didSet { update() }}
+  var ampEG: AKAmplitudeEnvelope!
 
   // Sequencer
   let midi = AKMIDI()
   var sequencer: AKSequencer!
   var tempo = Tempo() { didSet { sequencer?.setTempo(tempo.bpm) }}
   var velocity: UInt8 = 90 { didSet { restartSequencer() }}
-  
+
   // Sequence
   var key = Key(type: .c) { didSet { restartSequencer() }}
   var scaleType = ScaleType.major { didSet { restartSequencer() }}
@@ -151,6 +151,8 @@ class TheSynth: AKMIDIListener {
   func start() {
     // Mixer
     mixer = AKMixer([osc1, osc2])
+    osc1.rampDuration = 0
+    osc2.rampDuration = 0
 
     // Filter
     ladder = AKMoogLadder(
@@ -179,14 +181,7 @@ class TheSynth: AKMIDIListener {
 
     // AudioKit
     do {
-      osc1.start()
-      osc2.start()
-      mixer.start()
-      ladder.start()
-      ladderEG.start()
-      ampEG.start()
-
-      AudioKit.output = mixer
+      AudioKit.output = osc1
       try AudioKit.start()
     } catch {
       print(error)
@@ -226,10 +221,14 @@ class TheSynth: AKMIDIListener {
     track?.setMIDIOutput(midi.virtualInput)
     sequencer.enableLooping(currentPosition)
     sequencer.play()
+//    osc1.play()
+    osc2.play()
   }
 
   func stopSequencer() {
     sequencer.stop()
+//    osc1.stop()
+    osc2.stop()
   }
 
   func restartSequencer() {
@@ -241,7 +240,7 @@ class TheSynth: AKMIDIListener {
 
   // MARK: AKMIDIListener
 
-  func receivedMIDINoteOn(_ noteNumber: MIDINoteNumber, velocity: MIDIVelocity, channel: MIDIChannel) {
+  func receivedMIDINoteOn(noteNumber: MIDINoteNumber, velocity: MIDIVelocity, channel: MIDIChannel) {
     osc1.frequency = noteNumber.midiNoteToFrequency()
     osc2.frequency = noteNumber.midiNoteToFrequency()
     osc1.amplitude = osc1Amp
