@@ -1,9 +1,12 @@
 PODS:
-  - AudioKit (4.3):
-    - AudioKit/UI (= 4.3)
-  - AudioKit/UI (4.3)
-  - Eureka (4.2.0)
-  - MusicTheorySwift (1.0.0)
+  - AudioKit (4.5.1):
+    - AudioKit/Core (= 4.5.1)
+    - AudioKit/UI (= 4.5.1)
+  - AudioKit/Core (4.5.1)
+  - AudioKit/UI (4.5.1):
+    - AudioKit/Core
+  - Eureka (4.3.0)
+  - MusicTheorySwift (1.1.0)
 
 DEPENDENCIES:
   - AudioKit
@@ -17,10 +20,10 @@ SPEC REPOS:
     - MusicTheorySwift
 
 SPEC CHECKSUMS:
-  AudioKit: 95bd2427c1afa7954d71b0c6195a09b87b7448bc
-  Eureka: 0748c7bbb2560130e43c7bfa83e99c98854a1f42
-  MusicTheorySwift: 2102218ba959c04204f376d02f7719fe5f4cfb98
+  AudioKit: 8154f343a24daed3ab77b76a0a45739c5f3147e5
+  Eureka: 6d711cb30ca333b4bc893110285a722ae3840114
+  MusicTheorySwift: 555d61fc174c36c7cb1a41cf20b54628ba6b3e32
 
-PODFILE CHECKSUM: ed2979ac02bf636e786886d67523cf36b530f744
+PODFILE CHECKSUM: b4faa4a5b145a14d0cb9fea6bf6a36c8b6c11f63
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.0.beta.1

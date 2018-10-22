@@ -10,7 +10,7 @@ import UIKit
 import AudioKit
 import MusicTheorySwift
 
-class TheSynth: AKMIDIListener {
+class TheSynth {
 
   enum OSCTable: Int, CustomStringConvertible {
     case saw
@@ -139,6 +139,7 @@ class TheSynth: AKMIDIListener {
   var sequencer: AKSequencer!
   var tempo = Tempo() { didSet { sequencer?.setTempo(tempo.bpm) }}
   var velocity: UInt8 = 90 { didSet { restartSequencer() }}
+  var callbackInstrument = AKCallbackInstrument()
 
   // Sequence
   var key = Key(type: .c) { didSet { restartSequencer() }}
@@ -175,12 +176,18 @@ class TheSynth: AKMIDIListener {
       sustainLevel: 0.2,
       releaseDuration: 0.1)
 
-    // MIDI
-    midi.createVirtualInputPort()
-    midi.addListener(self)
+    // MIDI Callback Instrument
+    callbackInstrument.callback = midiCallback
 
     // AudioKit
     do {
+      osc1.start()
+      osc2.start()
+      mixer.start()
+      ladder.start()
+      ladderEG.start()
+      ampEG.start()
+      
       AudioKit.output = osc1
       try AudioKit.start()
     } catch {
@@ -218,16 +225,16 @@ class TheSynth: AKMIDIListener {
       currentPosition = AKDuration(seconds: currentPosition.seconds + duration.seconds)
     }
 
-    track?.setMIDIOutput(midi.virtualInput)
+    track?.setMIDIOutput(callbackInstrument.midiIn)
     sequencer.enableLooping(currentPosition)
     sequencer.play()
-//    osc1.play()
+    osc1.play()
     osc2.play()
   }
 
   func stopSequencer() {
     sequencer.stop()
-//    osc1.stop()
+    osc1.stop()
     osc2.stop()
   }
 
@@ -238,18 +245,20 @@ class TheSynth: AKMIDIListener {
     }
   }
 
-  // MARK: AKMIDIListener
+  func midiCallback(status: AKMIDIStatus, noteNumber: MIDINoteNumber, velocity: MIDIVelocity) {
+    switch status {
+    case .noteOn:
+      osc1.frequency = noteNumber.midiNoteToFrequency()
+      osc2.frequency = noteNumber.midiNoteToFrequency()
+      osc1.amplitude = osc1Amp
+      osc2.amplitude = osc2Amp
 
-  func receivedMIDINoteOn(noteNumber: MIDINoteNumber, velocity: MIDIVelocity, channel: MIDIChannel) {
-    osc1.frequency = noteNumber.midiNoteToFrequency()
-    osc2.frequency = noteNumber.midiNoteToFrequency()
-    osc1.amplitude = osc1Amp
-    osc2.amplitude = osc2Amp
-    print(osc1Amp, osc2Amp)
-  }
+    case .noteOff:
+      osc1.amplitude = 0
+      osc2.amplitude = 0
 
-  func receivedMIDINoteOff(noteNumber: MIDINoteNumber, velocity: MIDIVelocity, channel: MIDIChannel) {
-    osc1.amplitude = 0
-    osc2.amplitude = 0
+    default:
+      return
+    }
   }
 }
